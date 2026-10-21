@@ -104,6 +104,111 @@ const levels = [
   ] }
 ];
 
+const bridgeLevels = [
+  { worldId: "bridge", title: "Bilhete do Piquenique", icon: "🧺", topic: "Leitura de bilhete e adição", skill: "EF15LP03 · EF03MA05", questions: [
+    { text: "No bilhete, Nina escreveu: “Leve 12 maçãs e 8 peras.” Quantas frutas ela pediu?", choices: ["18", "20", "24"], answer: 1, explanation: "O bilhete informa 12 maçãs e 8 peras. Somando 12 + 8, são 20 frutas." },
+    { text: "O bilhete diz: “Encontro às 9 horas.” Qual informação ele apresenta?", choices: ["O horário do encontro", "O nome de uma fruta", "O preço do lanche"], answer: 0, explanation: "A expressão “às 9 horas” informa quando será o encontro." },
+    { text: "Beto leu: “Há 15 sanduíches. Vamos repartir igualmente entre 5 amigos.” Quantos cada um recebe?", choices: ["3", "5", "10"], answer: 0, explanation: "A informação pede uma divisão em partes iguais: 15 ÷ 5 = 3 sanduíches para cada amigo." },
+    { text: "No recado “Traga 6 copos azuis e 7 copos verdes”, quantos copos serão levados?", choices: ["13", "12", "14"], answer: 0, explanation: "O recado pede 6 copos azuis e 7 verdes. Ao todo: 6 + 7 = 13." },
+    { text: "Um convite marca a festa para sábado, dia 18. Se hoje é dia 15, quantos dias faltam?", choices: ["2 dias", "3 dias", "4 dias"], answer: 1, explanation: "Contando do dia 15 até o dia 18: 16, 17 e 18. Faltam 3 dias." }
+  ] },
+  { worldId: "bridge", title: "Receita das Palavras", icon: "🥣", topic: "Leitura de receita e multiplicação", skill: "EF03LP11 · EF03MA07", questions: [
+    { text: "A receita diz: “Use 2 bananas para cada porção.” Quantas bananas são necessárias para 4 porções?", choices: ["6", "8", "10"], answer: 1, explanation: "São 2 bananas para cada uma das 4 porções: 2 + 2 + 2 + 2 = 8." },
+    { text: "Na receita, a palavra “misture” indica...", choices: ["Uma ação que deve ser feita", "O nome de um ingrediente", "A quantidade de porções"], answer: 0, explanation: "“Misture” é uma instrução, uma ação que a pessoa deve fazer." },
+    { text: "Uma receita usa 3 copos de água. Quantos copos para preparar 2 receitas iguais?", choices: ["5", "6", "9"], answer: 1, explanation: "Dobrar a receita é fazer 3 + 3 = 6 copos de água." },
+    { text: "A receita rende 12 bolinhos. Eles serão colocados igualmente em 3 pratos. Quantos por prato?", choices: ["4", "6", "9"], answer: 0, explanation: "12 bolinhos divididos igualmente em 3 pratos: 12 ÷ 3 = 4." },
+    { text: "Qual palavra da instrução mostra a ordem do passo: “Depois, acrescente a farinha”?", choices: ["Depois", "Farinha", "Acrescente"], answer: 0, explanation: "“Depois” mostra em que momento esse passo deve acontecer." }
+  ] },
+  { worldId: "bridge", title: "Feira dos Cartazes", icon: "🎪", topic: "Leitura de cartaz e subtração", skill: "EF15LP03 · EF03MA05", questions: [
+    { text: "O cartaz anuncia: “Feira às 14h, entrada gratuita!” O que significa “gratuita”?", choices: ["Não precisa pagar entrada", "A feira dura 14 horas", "Só entram 14 pessoas"], answer: 0, explanation: "“Gratuita” quer dizer que não é preciso pagar para entrar." },
+    { text: "A barraca preparou 30 maçãs e vendeu 12. Quantas sobraram?", choices: ["18", "22", "42"], answer: 0, explanation: "Subtraímos as 12 maçãs vendidas: 30 - 12 = 18." },
+    { text: "No cartaz, “Compre 2 sucos por R$ 8” informa...", choices: ["A quantidade e o preço", "O horário da feira", "O nome de quem escreveu"], answer: 0, explanation: "A frase apresenta o que está à venda, a quantidade e o preço." },
+    { text: "Há 24 pães para colocar em 4 cestas iguais. Quantos pães em cada cesta?", choices: ["6", "8", "20"], answer: 0, explanation: "24 ÷ 4 = 6 pães em cada cesta." },
+    { text: "Uma banca tinha 16 livros. Chegaram mais 9. Quantos livros há agora?", choices: ["23", "25", "27"], answer: 1, explanation: "Somamos os livros que chegaram: 16 + 9 = 25." }
+  ] }
+];
+
+const portugueseLevels = [
+  { worldId: "portuguese", title: "Jardim da Ortografia", icon: "🔤", topic: "Escrita de palavras", skill: "EF03LP01 · EF03LP03", questions: [
+    { text: "Qual palavra está escrita corretamente?", choices: ["passarinho", "pasarinho", "passarino"], answer: 0, explanation: "“Passarinho” é escrita com ss e com o dígrafo nh." },
+    { text: "Complete: “O menino foi à ___ para pegar um livro.”", choices: ["biblioteca", "bibliotéca", "bibliotequa"], answer: 0, explanation: "A escrita correta é “biblioteca”, com c antes de a." },
+    { text: "Qual palavra completa “O ___ latiu para o carteiro”?", choices: ["cachoro", "cachorro", "caxorro"], answer: 1, explanation: "“Cachorro” se escreve com ch e rr." },
+    { text: "Qual palavra está escrita corretamente?", choices: ["folha", "foia", "folia"], answer: 0, explanation: "“Folha” é escrita com lh." },
+    { text: "Complete: “A ___ está brilhando no céu.”", choices: ["estrela", "estela", "estrelaa"], answer: 0, explanation: "A escrita correta é “estrela”, com r depois do t." }
+  ] },
+  { worldId: "portuguese", title: "Trilha das Sílabas", icon: "👏", topic: "Sílabas e sons das palavras", skill: "EF03LP02 · EF03LP05", questions: [
+    { text: "Quantas sílabas tem a palavra “boneca”?", choices: ["2", "3", "4"], answer: 1, explanation: "Separando: bo-ne-ca. A palavra tem 3 sílabas." },
+    { text: "Qual palavra tem duas sílabas?", choices: ["gato", "janela", "sol"], answer: 0, explanation: "Separando ga-to, “gato” tem duas sílabas." },
+    { text: "Qual palavra começa com a mesma sílaba de “sapato”?", choices: ["sapo", "cavalo", "pipoca"], answer: 0, explanation: "“Sapato” começa com a sílaba sa. “Sapo” também começa com sa." },
+    { text: "Qual palavra tem três sílabas?", choices: ["caderno", "trem", "livro"], answer: 0, explanation: "Separando ca-der-no, “caderno” tem três sílabas." },
+    { text: "Qual palavra tem quatro sílabas?", choices: ["abacaxi", "janela", "pato"], answer: 0, explanation: "Separando a-ba-ca-xi, “abacaxi” tem quatro sílabas." }
+  ] },
+  { worldId: "portuguese", title: "Ilha da Pontuação", icon: "❓", topic: "Pontuação e entonação", skill: "EF03LP07", questions: [
+    { text: "Qual sinal usamos no final de uma pergunta?", choices: ["?", "!", "."], answer: 0, explanation: "O ponto de interrogação (?) aparece no final de uma pergunta." },
+    { text: "Qual frase mostra surpresa e está pontuada corretamente?", choices: ["Que lindo jardim!", "Que lindo jardim?", "Que lindo jardim,"], answer: 0, explanation: "O ponto de exclamação pode mostrar surpresa ou entusiasmo." },
+    { text: "Qual pontuação completa: “A menina leu o livro___”", choices: [".", "?", "!"], answer: 0, explanation: "A frase conta uma informação. O ponto final encerra uma declaração." },
+    { text: "Qual frase está escrita como uma pergunta?", choices: ["Você vem brincar?", "Você vem brincar.", "Você vem brincar!"], answer: 0, explanation: "O ponto de interrogação mostra que a pessoa está perguntando." },
+    { text: "Na frase “Socorro!”, o ponto de exclamação mostra...", choices: ["Um chamado com emoção", "Uma pergunta", "O fim de uma lista"], answer: 0, explanation: "O ponto de exclamação pode indicar emoção ou um chamado forte." }
+  ] },
+  { worldId: "portuguese", title: "Vila dos Substantivos", icon: "🏘️", topic: "Substantivos e verbos", skill: "EF03LP08", questions: [
+    { text: "Na frase “O coelho saltou”, qual palavra nomeia um ser?", choices: ["coelho", "saltou", "o"], answer: 0, explanation: "“Coelho” é o nome do animal: um substantivo." },
+    { text: "Na frase “A menina desenha”, qual palavra mostra uma ação?", choices: ["menina", "desenha", "a"], answer: 1, explanation: "“Desenha” é o que a menina faz: um verbo que indica ação." },
+    { text: "Qual destas palavras é o nome de um lugar?", choices: ["escola", "correr", "alegre"], answer: 0, explanation: "“Escola” nomeia um lugar e é um substantivo." },
+    { text: "Complete com uma ação: “Os amigos ___ no parque.”", choices: ["brincam", "amigos", "parque"], answer: 0, explanation: "“Brincam” é o verbo que indica a ação dos amigos." },
+    { text: "Na frase “A chuva molhou a rua”, qual palavra indica o que aconteceu?", choices: ["chuva", "molhou", "rua"], answer: 1, explanation: "“Molhou” é o verbo: conta a ação que aconteceu." }
+  ] },
+  { worldId: "portuguese", title: "Bosque dos Adjetivos", icon: "🎨", topic: "Adjetivos e características", skill: "EF03LP09", questions: [
+    { text: "Na frase “A borboleta colorida voou”, qual palavra descreve a borboleta?", choices: ["colorida", "voou", "borboleta"], answer: 0, explanation: "“Colorida” conta uma característica da borboleta: é um adjetivo." },
+    { text: "Qual palavra completa “O gigante ___ ajudou o vilarejo” descrevendo o tamanho?", choices: ["alto", "ajudou", "vilarejo"], answer: 0, explanation: "“Alto” descreve o gigante." },
+    { text: "Qual destas palavras indica uma característica?", choices: ["macio", "pular", "cadeira"], answer: 0, explanation: "“Macio” descreve como algo é." },
+    { text: "Em “As flores perfumadas enfeitam o jardim”, que palavra descreve as flores?", choices: ["perfumadas", "enfeitam", "jardim"], answer: 0, explanation: "“Perfumadas” é a característica das flores." },
+    { text: "Escolha um adjetivo para completar: “O filhote é muito ___.”", choices: ["brincalhão", "correr", "filhote"], answer: 0, explanation: "“Brincalhão” descreve uma característica do filhote." }
+  ] },
+  { worldId: "portuguese", title: "Oficina de Palavras", icon: "🛠️", topic: "Formação de palavras", skill: "EF03LP10", questions: [
+    { text: "Qual palavra formada a partir de “feliz” tem sentido contrário?", choices: ["infeliz", "felizmente", "felicidade"], answer: 0, explanation: "“Infeliz” é formada com o começo “in-”, que muda a ideia de feliz para o sentido contrário." },
+    { text: "A palavra “desligar” começa com “des-”. Qual ideia esse começo pode indicar?", choices: ["Fazer o contrário da ação de ligar", "Um lugar para ligar", "Uma pessoa que liga"], answer: 0, explanation: "O começo “des-” pode indicar a ideia contrária: desligar é o contrário de ligar." },
+    { text: "Qual palavra pode ser formada acrescentando “-eiro” a “livro”?", choices: ["livreiro", "livrinho", "livraria"], answer: 0, explanation: "“Livreiro” é uma palavra formada com a base “livro” e o final “-eiro”." },
+    { text: "Se alguém é “cuidadoso”, essa pessoa costuma...", choices: ["agir com cuidado", "perder todo cuidado", "ser um lugar"], answer: 0, explanation: "“Cuidadoso” descreve quem age com cuidado." },
+    { text: "Qual palavra tem um começo que indica repetição?", choices: ["reler", "flor", "papel"], answer: 0, explanation: "“Reler” é ler de novo. O começo “re-” indica repetição." }
+  ] },
+  { worldId: "portuguese", title: "Cozinha das Instruções", icon: "🧑‍🍳", topic: "Receitas e instruções", skill: "EF03LP11 · EF03LP16", questions: [
+    { text: "Qual texto costuma apresentar uma lista de ingredientes e um modo de preparo?", choices: ["Receita", "Convite", "Bilhete de aniversário"], answer: 0, explanation: "Uma receita costuma listar os ingredientes e explicar como preparar algo." },
+    { text: "Em uma instrução, a palavra “acrescente” pede que a pessoa...", choices: ["coloque mais um ingrediente", "apague a receita", "leia o título"], answer: 0, explanation: "“Acrescente” é uma orientação para colocar mais alguma coisa." },
+    { text: "Por que uma receita costuma mostrar os ingredientes antes do preparo?", choices: ["Para saber o que separar antes de começar", "Para contar uma aventura", "Para esconder os passos"], answer: 0, explanation: "A lista ajuda a conferir e separar o que será usado." },
+    { text: "Qual sequência faz mais sentido para preparar uma salada?", choices: ["Lavar os ingredientes, cortar e misturar", "Misturar, guardar e só então lavar", "Cortar, servir e depois buscar os ingredientes"], answer: 0, explanation: "Primeiro lavamos os ingredientes; depois podemos cortá-los e misturá-los." },
+    { text: "A frase “Mexa a massa devagar” é...", choices: ["Uma instrução", "Uma pergunta", "Uma lista de ingredientes"], answer: 0, explanation: "A frase orienta a pessoa sobre uma ação a realizar." }
+  ] },
+  { worldId: "portuguese", title: "Correio das Histórias", icon: "💌", topic: "Bilhetes, cartas e diários", skill: "EF03LP12 · EF03LP17", questions: [
+    { text: "Qual saudação combina com o começo de uma carta para um amigo?", choices: ["Olá, Pedro!", "Misture tudo.", "Fim da receita."], answer: 0, explanation: "“Olá, Pedro!” é uma saudação adequada para começar uma carta a um amigo." },
+    { text: "Em um diário, a pessoa costuma escrever...", choices: ["acontecimentos e pensamentos", "somente preços de produtos", "instruções de trânsito"], answer: 0, explanation: "No diário, a pessoa registra coisas que viveu, sentiu ou pensou." },
+    { text: "Qual informação combina com o final de uma carta pessoal?", choices: ["Uma despedida e o nome de quem escreveu", "Uma lista de compras sem saudação", "Uma conta de multiplicação"], answer: 0, explanation: "Cartas pessoais costumam terminar com uma despedida e a assinatura." },
+    { text: "Lia escreveu “Senti saudades e espero brincar com você”. O que ela expressou?", choices: ["Um sentimento e um desejo", "Uma ordem de preparo", "O preço de um brinquedo"], answer: 0, explanation: "Lia contou que sente saudades e disse o que gostaria que acontecesse." },
+    { text: "Qual frase parece contar um acontecimento de um diário?", choices: ["Hoje visitei minha avó e fiquei feliz.", "Coloque duas xícaras de farinha.", "Atenção: promoção na loja!"], answer: 0, explanation: "A frase conta algo vivido e um sentimento, como em um diário." }
+  ] },
+  { worldId: "portuguese", title: "Praça dos Anúncios", icon: "📣", topic: "Cartazes e finalidade dos textos", skill: "EF03LP19", questions: [
+    { text: "Um cartaz diz “Cuide da praça: jogue o lixo na lixeira!”. Qual é o objetivo?", choices: ["Incentivar as pessoas a cuidar da praça", "Ensinar uma receita", "Contar um sonho"], answer: 0, explanation: "O cartaz quer convencer e orientar as pessoas a manter a praça limpa." },
+    { text: "Qual frase combina com um convite para uma festa?", choices: ["Venha comemorar com a gente!", "Desligue a televisão.", "Era uma vez um castelo."], answer: 0, explanation: "“Venha comemorar com a gente!” convida o leitor para participar." },
+    { text: "Em um cartaz, letras grandes e coloridas podem ajudar a...", choices: ["chamar a atenção para a mensagem", "esconder a mensagem", "mostrar o final de uma carta"], answer: 0, explanation: "Cores e letras destacadas ajudam a chamar a atenção do leitor." },
+    { text: "Um anúncio diz “Doe livros e espalhe histórias”. O que ele quer?", choices: ["Incentivar a doação de livros", "Vender uma receita", "Avisar que a biblioteca fechou"], answer: 0, explanation: "O anúncio convida as pessoas a doar livros." },
+    { text: "Qual frase é um slogan para economizar água?", choices: ["Cada gota conta: feche a torneira!", "O bolo ficou no forno.", "Minha carta chegou ontem."], answer: 0, explanation: "A frase é curta, chama a atenção e incentiva a economizar água." }
+  ] },
+  { worldId: "portuguese", title: "Biblioteca Encantada", icon: "📚", topic: "Leitura e compreensão", skill: "EF15LP03", questions: [
+    { text: "Leia: “Caio levou um guarda-chuva porque o céu estava escuro.” Por que ele levou o guarda-chuva?", choices: ["Porque o céu estava escuro", "Porque ia à biblioteca", "Porque perdeu o livro"], answer: 0, explanation: "O texto diz que Caio levou o guarda-chuva porque o céu estava escuro." },
+    { text: "Leia: “O gato dormiu sobre a almofada azul.” Onde o gato dormiu?", choices: ["Sobre a almofada azul", "Dentro da mochila", "No jardim amarelo"], answer: 0, explanation: "A informação aparece diretamente na frase: ele dormiu sobre a almofada azul." },
+    { text: "Leia: “Bia regou a horta pela manhã. À tarde, colheu tomates.” O que Bia fez primeiro?", choices: ["Regou a horta", "Colheu tomates", "Preparou uma carta"], answer: 0, explanation: "O texto conta primeiro que Bia regou a horta pela manhã." },
+    { text: "Leia: “Rui emprestou o livro para Ana.” Quem recebeu o livro?", choices: ["Ana", "Rui", "O livro"], answer: 0, explanation: "Ana recebeu o livro emprestado por Rui." },
+    { text: "Leia: “A equipe guardou os brinquedos depois da brincadeira.” Quando guardou os brinquedos?", choices: ["Depois da brincadeira", "Antes de chegar", "Durante o almoço"], answer: 0, explanation: "A frase diz que a equipe guardou os brinquedos depois da brincadeira." }
+  ] }
+];
+
+levels.push(...bridgeLevels, ...portugueseLevels);
+
+const worlds = [
+  { id: "math", title: "Bosque dos Doces", shortTitle: "Matemática", eyebrow: "MUNDO 1 · MATEMÁTICA", icon: "🌳", start: 0, count: 12 },
+  { id: "bridge", title: "Ponte dos Desafios", shortTitle: "Desafio misto", eyebrow: "PONTE ENTRE OS MUNDOS · MATEMÁTICA + PORTUGUÊS", icon: "🌉", start: 12, count: 3 },
+  { id: "portuguese", title: "Vila das Palavras", shortTitle: "Português", eyebrow: "MUNDO 2 · LÍNGUA PORTUGUESA", icon: "📚", start: 15, count: 10 }
+];
+
 const skins = [
   { id: "fox", name: "Raposa", emoji: "🦊", price: 0 },
   { id: "dragon", name: "Dragão", emoji: "🐲", price: 12 },
@@ -126,6 +231,10 @@ const elements = {
   progressFill: document.querySelector("#progress-fill"),
   progressLabel: document.querySelector("#progress-label"),
   heroMascot: document.querySelector("#hero-mascot"),
+  worldTabs: document.querySelector("#world-tabs"),
+  worldEyebrow: document.querySelector("#world-eyebrow"),
+  mapTitle: document.querySelector("#map-title"),
+  mapCard: document.querySelector(".map-card"),
   levelPath: document.querySelector("#level-path"),
   skinList: document.querySelector("#skin-list"),
   quizOverlay: document.querySelector("#quiz-overlay"),
@@ -145,6 +254,7 @@ const elements = {
 let state = loadState();
 let activeRun = null;
 let summaryOutcome = null;
+let selectedWorldId = getWorldForLevel(state.unlockedLevel).id;
 let toastTimeout = null;
 
 function loadState() {
@@ -194,11 +304,13 @@ function showToast(message) {
 
 function render() {
   renderStats();
+  renderWorldTabs();
   renderLevels();
   renderShop();
 }
 
 function renderStats() {
+  document.body.dataset.theme = state.equippedSkin;
   elements.starCount.textContent = state.stars;
   elements.shopStarCount.textContent = state.stars;
   elements.heroMascot.textContent = getEquippedSkin().emoji;
@@ -206,25 +318,62 @@ function renderStats() {
   elements.progressFill.style.width = `${(completed / levels.length) * 100}%`;
   elements.progressLabel.textContent = `${completed} de ${levels.length} fases concluídas`;
   elements.progress.setAttribute("aria-valuenow", String(completed));
+  elements.progress.setAttribute("aria-valuemax", String(levels.length));
+}
+
+function getWorldForLevel(levelIndex) {
+  return worlds.find((world) => levelIndex >= world.start && levelIndex < world.start + world.count) || worlds[0];
+}
+
+function renderWorldTabs() {
+  elements.worldTabs.replaceChildren();
+  worlds.forEach((world) => {
+    const isUnlocked = state.unlockedLevel >= world.start;
+    const isSelected = selectedWorldId === world.id;
+    const completed = Array.from({ length: world.count }, (_, index) => world.start + index)
+      .every((index) => state.completedLevels.includes(index));
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `world-tab${isSelected ? " selected" : ""}${completed ? " completed" : ""}${isUnlocked ? "" : " locked"}`;
+    button.disabled = !isUnlocked;
+    button.setAttribute("aria-pressed", String(isSelected));
+    button.setAttribute("aria-label", `Mundo ${world.shortTitle}${completed ? ", concluído" : isUnlocked ? ", disponível" : ", bloqueado"}`);
+    button.innerHTML = `<span class="world-tab-icon" aria-hidden="true">${isUnlocked ? world.icon : "🔒"}</span><span class="world-tab-copy"><span class="world-tab-title">${world.shortTitle}</span><span class="world-tab-progress">${isUnlocked ? `${state.completedLevels.filter((index) => index >= world.start && index < world.start + world.count).length} de ${world.count} fases` : "Complete o mundo anterior"}</span></span>`;
+    if (isUnlocked) {
+      button.addEventListener("click", () => {
+        selectedWorldId = world.id;
+        renderWorldTabs();
+        renderLevels();
+      });
+    }
+    elements.worldTabs.append(button);
+  });
+  const selectedWorld = worlds.find((world) => world.id === selectedWorldId) || worlds[0];
+  elements.worldEyebrow.textContent = selectedWorld.eyebrow;
+  elements.mapTitle.innerHTML = `${selectedWorld.title} <span aria-hidden="true">${selectedWorld.icon}</span>`;
 }
 
 function renderLevels() {
   elements.levelPath.replaceChildren();
   const columns = window.matchMedia("(max-width: 650px)").matches ? 3 : 4;
-  levels.forEach((level, index) => {
+  const world = worlds.find((item) => item.id === selectedWorldId) || worlds[0];
+  elements.levelPath.classList.toggle("short-path", world.id === "bridge");
+  elements.mapCard.classList.toggle("short-map", world.id === "bridge");
+  levels.slice(world.start, world.start + world.count).forEach((level, localIndex) => {
+    const index = world.start + localIndex;
     const isCompleted = state.completedLevels.includes(index);
     const isLocked = index > state.unlockedLevel;
     const button = document.createElement("button");
     button.type = "button";
     button.className = `level-node${isCompleted ? " completed" : ""}${isLocked ? " locked" : ""}${index === state.unlockedLevel && !isCompleted ? " current" : ""}`;
     button.disabled = isLocked;
-    button.setAttribute("aria-label", `Fase ${index + 1}: ${level.title}${isCompleted ? ", concluída" : isLocked ? ", bloqueada" : ", disponível"}`);
-    button.style.animationDelay = `${index * 35}ms`;
-    const row = Math.floor(index / columns);
-    const positionInRow = index % columns;
+    button.setAttribute("aria-label", `Fase ${localIndex + 1}: ${level.title}${isCompleted ? ", concluída" : isLocked ? ", bloqueada" : ", disponível"}`);
+    button.style.animationDelay = `${localIndex * 35}ms`;
+    const row = Math.floor(localIndex / columns);
+    const positionInRow = localIndex % columns;
     button.style.gridRow = String(row + 1);
     button.style.gridColumn = String(row % 2 === 0 ? positionInRow + 1 : columns - positionInRow);
-    button.innerHTML = `<span class="level-icon" aria-hidden="true">${isLocked ? "🔒" : isCompleted ? "✓" : level.icon}</span><span class="level-name">${index + 1}. ${level.title}</span><span class="level-stars" aria-label="${isCompleted ? "Fase concluída" : ""}">${isCompleted ? "★ ★ ★" : " "}</span>`;
+    button.innerHTML = `<span class="level-icon" aria-hidden="true">${isLocked ? "🔒" : isCompleted ? "✓" : level.icon}</span><span class="level-name">${localIndex + 1}. ${level.title}</span><span class="level-stars" aria-label="${isCompleted ? "Fase concluída" : ""}">${isCompleted ? "★ ★ ★" : " "}</span>`;
     if (!isLocked) button.addEventListener("click", () => startLevel(index));
     elements.levelPath.append(button);
   });
@@ -280,7 +429,8 @@ function startLevel(index) {
   };
   elements.quizOverlay.hidden = false;
   document.body.style.overflow = "hidden";
-  elements.quizTopic.textContent = `FASE ${index + 1} · ${level.topic}`;
+  const world = getWorldForLevel(index);
+  elements.quizTopic.textContent = `${world.shortTitle} · FASE ${index - world.start + 1} · ${level.topic}`;
   elements.quizMascot.textContent = getEquippedSkin().emoji;
   renderQuestion();
   elements.closeQuiz.focus();
@@ -380,14 +530,19 @@ function finishLevel() {
   const run = activeRun;
   summaryOutcome = { passed: run.correctAnswers >= PASSING_SCORE, levelIndex: run.levelIndex };
   const passed = run.correctAnswers >= PASSING_SCORE;
+  const previousUnlockedLevel = state.unlockedLevel;
   state.stars += run.correctAnswers;
   if (passed) {
     if (!state.completedLevels.includes(run.levelIndex)) state.completedLevels.push(run.levelIndex);
     state.unlockedLevel = Math.max(state.unlockedLevel, Math.min(levels.length - 1, run.levelIndex + 1));
   }
+  if (state.unlockedLevel > previousUnlockedLevel) selectedWorldId = getWorldForLevel(state.unlockedLevel).id;
   saveState();
   render();
-  elements.quizTopic.textContent = passed ? "FASE CONCLUÍDA" : "VOCÊ ESTÁ APRENDENDO";
+  const world = getWorldForLevel(run.levelIndex);
+  const nextWorld = worlds.find((item) => item.start === world.start + world.count);
+  const unlockedNewWorld = passed && state.unlockedLevel > previousUnlockedLevel && nextWorld;
+  elements.quizTopic.textContent = passed ? unlockedNewWorld ? "NOVO MUNDO DESBLOQUEADO" : "FASE CONCLUÍDA" : "VOCÊ ESTÁ APRENDENDO";
   elements.quizProgress.style.width = "100%";
   elements.questionSkill.textContent = "";
   elements.quizTitle.textContent = passed ? "Você conseguiu!" : "Mais uma tentativa e você chega lá!";
@@ -396,7 +551,7 @@ function finishLevel() {
   elements.feedback.hidden = false;
   elements.feedback.className = "answer-feedback";
   elements.feedback.textContent = passed
-    ? `Você acertou ${run.correctAnswers} de ${run.questions.length} desafios e ganhou ${run.correctAnswers} ⭐. ${run.levelIndex < levels.length - 1 ? "O próximo caminho já está aberto!" : "Você completou toda a trilha do Bosque dos Doces!"}`
+    ? `Você acertou ${run.correctAnswers} de ${run.questions.length} desafios e ganhou ${run.correctAnswers} ⭐. ${unlockedNewWorld ? `A aventura "${nextWorld.title}" está aberta!` : run.levelIndex === levels.length - 1 ? "Você completou todos os mundos da aventura!" : "O próximo caminho já está aberto!"}`
     : `Você acertou ${run.correctAnswers} de ${run.questions.length}. Ganhou ${run.correctAnswers} ⭐ e pode tentar a fase novamente quando quiser. Não tem pressa!`;
   elements.continueButton.hidden = false;
   elements.continueButton.textContent = passed ? "Voltar ao mapa" : "Tentar de novo";

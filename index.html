@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#fff8e8">
-    <meta name="description" content="Uma aventura de Matemática com desafios divertidos para o 3º ano do Ensino Fundamental.">
-    <title>Doce Saber — Aventura de Matemática</title>
+    <meta name="description" content="Uma aventura com desafios de Matemática e Língua Portuguesa para o 3º ano do Ensino Fundamental.">
+    <title>Doce Saber — Aventuras de Matemática e Português</title>
     <link rel="stylesheet" href="styles.css">
     <script src="game.js" defer></script>
   </head>
@@ -28,12 +28,12 @@
         <section class="welcome-card" aria-labelledby="welcome-title">
           <div class="welcome-copy">
             <p class="eyebrow">SUA PRÓXIMA AVENTURA</p>
-            <h1 id="welcome-title">Trilha dos <span>números</span></h1>
-            <p class="welcome-text">Resolva desafios, ganhe estrelas e explore o Bosque dos Doces!</p>
-            <div class="progress-track" role="progressbar" aria-label="Progresso da trilha" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="world-progress">
+            <h1 id="welcome-title">Trilha do <span>saber</span></h1>
+            <p class="welcome-text">Resolva desafios, ganhe estrelas e explore mundos de números e palavras!</p>
+            <div class="progress-track" role="progressbar" aria-label="Progresso da trilha" aria-valuemin="0" aria-valuemax="25" aria-valuenow="0" id="world-progress">
               <span class="progress-fill" id="progress-fill"></span>
             </div>
-            <p class="progress-label" id="progress-label">0 de 12 fases concluídas</p>
+            <p class="progress-label" id="progress-label">0 fases concluídas</p>
           </div>
           <div class="mascot-scene" aria-hidden="true">
             <span class="sparkle sparkle-one">✦</span>
@@ -43,9 +43,11 @@
           </div>
         </section>
 
+        <nav class="world-tabs" id="world-tabs" aria-label="Mundos da aventura"></nav>
+
         <section class="world-heading" aria-labelledby="map-title">
           <div>
-            <p class="eyebrow">MUNDO 1 · MATEMÁTICA</p>
+            <p class="eyebrow" id="world-eyebrow">MUNDO 1 · MATEMÁTICA</p>
             <h2 id="map-title">Bosque dos Doces <span aria-hidden="true">🌳</span></h2>
           </div>
           <p class="world-note"><span aria-hidden="true">🧭</span> Escolha uma fase para começar</p>
@@ -76,7 +78,7 @@
       </main>
 
       <footer class="site-footer">
-        <p>Um mundo piloto de Matemática para o 3º ano · Questões inspiradas em habilidades da BNCC</p>
+        <p>Uma aventura de Matemática e Língua Portuguesa para o 3º ano · Questões inspiradas em habilidades da BNCC</p>
       </footer>
     </div>
 
