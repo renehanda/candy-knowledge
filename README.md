@@ -7,6 +7,7 @@ Jogo educativo de navegador para o 3º ano do Ensino Fundamental. Não requer in
 - **Bosque dos Doces (Matemática):** 12 fases.
 - **Ponte dos Desafios:** 3 fases que combinam interpretação de textos e situações matemáticas; fica disponível depois de concluir Matemática.
 - **Vila das Palavras (Língua Portuguesa):** 10 fases; fica disponível depois de concluir a ponte de desafios.
+- Uma prévia coberta por nuvens indica o mundo de Português enquanto ele está bloqueado.
 - Banco inicial de 137 questões originais: 72 de Matemática, 15 de desafios mistos e 50 de Português. Cada tentativa sorteia 5 questões da fase.
 - Perguntas com explicações e identificação de habilidades da BNCC.
 - Estrelas por respostas corretas, usadas para comprar skins.

@@ -236,6 +236,7 @@ const elements = {
   mapTitle: document.querySelector("#map-title"),
   mapCard: document.querySelector(".map-card"),
   levelPath: document.querySelector("#level-path"),
+  nextWorldPreview: document.querySelector("#next-world-preview"),
   skinList: document.querySelector("#skin-list"),
   quizOverlay: document.querySelector("#quiz-overlay"),
   closeQuiz: document.querySelector("#close-quiz"),
@@ -359,6 +360,8 @@ function renderLevels() {
   const world = worlds.find((item) => item.id === selectedWorldId) || worlds[0];
   elements.levelPath.classList.toggle("short-path", world.id === "bridge");
   elements.mapCard.classList.toggle("short-map", world.id === "bridge");
+  const portugueseWorld = worlds.find((item) => item.id === "portuguese");
+  elements.nextWorldPreview.hidden = state.unlockedLevel >= portugueseWorld.start;
   levels.slice(world.start, world.start + world.count).forEach((level, localIndex) => {
     const index = world.start + localIndex;
     const isCompleted = state.completedLevels.includes(index);
