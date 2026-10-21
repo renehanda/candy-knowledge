@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fff8e8">
+    <meta name="description" content="Uma aventura de Matemática com desafios divertidos para o 3º ano do Ensino Fundamental.">
+    <title>Doce Saber — Aventura de Matemática</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="game.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#inicio" aria-label="Doce Saber, início">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>doce<span class="brand-accent">saber</span></span>
+        </a>
+        <div class="player-stats" aria-label="Seu progresso">
+          <span class="stat-pill hearts" title="Você pode tentar quantas vezes quiser">
+            <span aria-hidden="true">💛</span> sem pressa
+          </span>
+          <span class="stat-pill stars"><span aria-hidden="true">⭐</span> <span id="star-count">0</span></span>
+        </div>
+      </header>
+
+      <main id="inicio">
+        <section class="welcome-card" aria-labelledby="welcome-title">
+          <div class="welcome-copy">
+            <p class="eyebrow">SUA PRÓXIMA AVENTURA</p>
+            <h1 id="welcome-title">Trilha dos <span>números</span></h1>
+            <p class="welcome-text">Resolva desafios, ganhe estrelas e explore o Bosque dos Doces!</p>
+            <div class="progress-track" role="progressbar" aria-label="Progresso da trilha" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="world-progress">
+              <span class="progress-fill" id="progress-fill"></span>
+            </div>
+            <p class="progress-label" id="progress-label">0 de 12 fases concluídas</p>
+          </div>
+          <div class="mascot-scene" aria-hidden="true">
+            <span class="sparkle sparkle-one">✦</span>
+            <span class="sparkle sparkle-two">✧</span>
+            <span class="mascot" id="hero-mascot">🦊</span>
+            <span class="mascot-shadow"></span>
+          </div>
+        </section>
+
+        <section class="world-heading" aria-labelledby="map-title">
+          <div>
+            <p class="eyebrow">MUNDO 1 · MATEMÁTICA</p>
+            <h2 id="map-title">Bosque dos Doces <span aria-hidden="true">🌳</span></h2>
+          </div>
+          <p class="world-note"><span aria-hidden="true">🧭</span> Escolha uma fase para começar</p>
+        </section>
+
+        <section class="map-card" aria-label="Mapa de fases">
+          <div class="map-decoration decor-cloud cloud-one" aria-hidden="true"></div>
+          <div class="map-decoration decor-cloud cloud-two" aria-hidden="true"></div>
+          <div class="map-decoration tree tree-one" aria-hidden="true">🌲</div>
+          <div class="map-decoration tree tree-two" aria-hidden="true">🌳</div>
+          <div class="path-line" aria-hidden="true"></div>
+          <div class="level-path" id="level-path"></div>
+        </section>
+
+        <section class="shop-card" aria-labelledby="shop-title">
+          <div class="shop-heading">
+            <div>
+              <p class="eyebrow">LOJINHA DA FLORESTA</p>
+              <h2 id="shop-title">Vista seu personagem!</h2>
+            </div>
+            <span class="shop-star-count"><span aria-hidden="true">⭐</span> <span id="shop-star-count">0</span></span>
+          </div>
+          <p class="shop-description">Troque suas estrelas por um novo companheiro de aventura.</p>
+          <div class="skin-list" id="skin-list"></div>
+        </section>
+
+        <p class="gentle-reminder"><span aria-hidden="true">🌼</span> Cada tentativa ensina algo novo. Você consegue!</p>
+      </main>
+
+      <footer class="site-footer">
+        <p>Um mundo piloto de Matemática para o 3º ano · Questões inspiradas em habilidades da BNCC</p>
+      </footer>
+    </div>
+
+    <section class="quiz-overlay" id="quiz-overlay" hidden aria-labelledby="quiz-title">
+      <div class="quiz-panel" role="dialog" aria-modal="true" aria-describedby="quiz-instructions">
+        <button class="close-button" id="close-quiz" type="button" aria-label="Voltar ao mapa">×</button>
+        <div class="quiz-topline">
+          <span class="quiz-world-tag" id="quiz-topic">DESAFIO</span>
+          <span class="quiz-counter" id="quiz-counter">1 de 5</span>
+        </div>
+        <div class="quiz-progress" aria-hidden="true"><span id="quiz-progress-fill"></span></div>
+        <div class="quiz-mascot" id="quiz-mascot" aria-hidden="true">🦊</div>
+        <p class="eyebrow question-skill" id="question-skill"></p>
+        <h2 id="quiz-title"></h2>
+        <p class="quiz-instructions" id="quiz-instructions">Escolha uma resposta e toque em enviar.</p>
+        <div class="answer-list" id="answer-list"></div>
+        <div class="answer-feedback" id="answer-feedback" aria-live="polite" hidden></div>
+        <button class="primary-button continue-button" id="continue-button" type="button" disabled>Enviar resposta</button>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
