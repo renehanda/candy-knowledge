@@ -103,21 +103,47 @@
       </footer>
     </div>
 
-    <section class="quiz-overlay" id="quiz-overlay" hidden aria-labelledby="quiz-title">
-      <div class="quiz-panel" role="dialog" aria-modal="true" aria-describedby="quiz-instructions">
+    <section class="quiz-overlay" id="quiz-overlay" hidden>
+      <div class="quiz-panel" role="dialog" aria-modal="true" aria-labelledby="quiz-dialog-title">
         <button class="close-button" id="close-quiz" type="button" aria-label="Voltar ao mapa">×</button>
-        <div class="quiz-topline">
-          <span class="quiz-world-tag" id="quiz-topic">DESAFIO</span>
-          <span class="quiz-counter" id="quiz-counter">1 de 5</span>
+        <h2 class="dialog-title" id="quiz-dialog-title">Escolha como quer jogar</h2>
+        <section class="challenge-setup" id="challenge-setup" aria-labelledby="setup-title">
+          <div class="quiz-topline">
+            <span class="quiz-world-tag" id="setup-topic">DESAFIO</span>
+            <span class="quiz-counter">5 perguntas</span>
+          </div>
+          <h3 id="setup-title"></h3>
+          <p class="quiz-instructions">Você pode jogar no seu ritmo ou tentar o desafio contra o relógio.</p>
+          <div class="mode-buttons">
+            <button class="primary-button mode-button" id="normal-mode-button" type="button">Jogar no meu ritmo</button>
+            <button class="primary-button mode-button timed-mode-button" id="timed-mode-button" type="button">⏱️ Desafio: 15 segundos por pergunta</button>
+          </div>
+          <p class="challenge-rules">No desafio, um erro ou o fim do tempo encerra a rodada. Essa modalidade não altera suas estrelas nem o avanço das fases.</p>
+          <section class="leaderboard" aria-labelledby="leaderboard-title">
+            <h3 id="leaderboard-title">🏆 Melhores marcas desta fase</h3>
+            <ol class="leaderboard-list" id="leaderboard-list"></ol>
+          </section>
+        </section>
+        <div class="quiz-game" id="quiz-game" hidden>
+          <div class="quiz-topline">
+            <span class="quiz-world-tag" id="quiz-topic">DESAFIO</span>
+            <span class="quiz-counter" id="quiz-counter">1 de 5</span>
+          </div>
+          <div class="quiz-progress" aria-hidden="true"><span id="quiz-progress-fill"></span></div>
+          <div class="timer-panel" id="timer-panel" hidden>
+            <span class="timer-icon" aria-hidden="true">⏱️</span>
+            <span class="timer-label">Tempo para responder</span>
+            <span class="timer-count" id="timer-count" role="timer" aria-live="off">15s</span>
+            <span class="timer-track" aria-hidden="true"><span id="timer-fill"></span></span>
+          </div>
+          <div class="quiz-mascot" id="quiz-mascot" aria-hidden="true">🦊</div>
+          <p class="eyebrow question-skill" id="question-skill"></p>
+          <h2 id="quiz-title"></h2>
+          <p class="quiz-instructions" id="quiz-instructions">Escolha uma resposta e toque em enviar.</p>
+          <div class="answer-list" id="answer-list"></div>
+          <div class="answer-feedback" id="answer-feedback" aria-live="polite" hidden></div>
+          <button class="primary-button continue-button" id="continue-button" type="button" disabled>Enviar resposta</button>
         </div>
-        <div class="quiz-progress" aria-hidden="true"><span id="quiz-progress-fill"></span></div>
-        <div class="quiz-mascot" id="quiz-mascot" aria-hidden="true">🦊</div>
-        <p class="eyebrow question-skill" id="question-skill"></p>
-        <h2 id="quiz-title"></h2>
-        <p class="quiz-instructions" id="quiz-instructions">Escolha uma resposta e toque em enviar.</p>
-        <div class="answer-list" id="answer-list"></div>
-        <div class="answer-feedback" id="answer-feedback" aria-live="polite" hidden></div>
-        <button class="primary-button continue-button" id="continue-button" type="button" disabled>Enviar resposta</button>
       </div>
     </section>
 

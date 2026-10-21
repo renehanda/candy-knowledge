@@ -11,6 +11,8 @@ Jogo educativo de navegador para o 3º ano do Ensino Fundamental. Não requer in
 - Banco inicial de 137 questões originais: 72 de Matemática, 15 de desafios mistos e 50 de Português. Cada tentativa sorteia 5 questões da fase.
 - Perguntas com explicações e identificação de habilidades da BNCC.
 - Estrelas por respostas corretas, usadas para comprar skins.
+- Cada fase pode ser jogada no modo normal ou em um desafio opcional com 15 segundos por pergunta. No desafio, errar ou deixar o tempo acabar encerra a rodada, sem conceder estrelas nem alterar o avanço das fases.
+- O desafio registra as três melhores marcas de cada fase neste navegador, ordenadas pelo número de acertos e pelo menor tempo total de resposta. Rodadas abandonadas não entram no placar.
 - Cada personagem equipado também muda a paleta de cores do jogo; a escolha permanece salva entre visitas.
 - Progresso e personagem salvos no armazenamento local do navegador. O progresso de Matemática salvo anteriormente é preservado.
 - Layout adaptável a celular e computador, animações leves e respeito à preferência por movimento reduzido.

@@ -1,8 +1,11 @@
 "use strict";
 
 const STORAGE_KEY = "doce-saber-save-v1";
+const LEADERBOARD_STORAGE_KEY = "doce-saber-timed-records-v1";
 const QUESTIONS_PER_LEVEL = 5;
 const PASSING_SCORE = 3;
+const TIME_PER_QUESTION_SECONDS = 15;
+const LEADERBOARD_SIZE = 3;
 const LETTERS = ["A", "B", "C"];
 
 const levels = [
@@ -240,6 +243,14 @@ const elements = {
   skinList: document.querySelector("#skin-list"),
   quizOverlay: document.querySelector("#quiz-overlay"),
   closeQuiz: document.querySelector("#close-quiz"),
+  dialogTitle: document.querySelector("#quiz-dialog-title"),
+  challengeSetup: document.querySelector("#challenge-setup"),
+  setupTopic: document.querySelector("#setup-topic"),
+  setupTitle: document.querySelector("#setup-title"),
+  leaderboard: document.querySelector("#leaderboard-list"),
+  normalModeButton: document.querySelector("#normal-mode-button"),
+  timedModeButton: document.querySelector("#timed-mode-button"),
+  quizGame: document.querySelector("#quiz-game"),
   quizTopic: document.querySelector("#quiz-topic"),
   quizCounter: document.querySelector("#quiz-counter"),
   quizProgress: document.querySelector("#quiz-progress-fill"),
@@ -249,13 +260,19 @@ const elements = {
   answerList: document.querySelector("#answer-list"),
   feedback: document.querySelector("#answer-feedback"),
   continueButton: document.querySelector("#continue-button"),
+  timerPanel: document.querySelector("#timer-panel"),
+  timerCount: document.querySelector("#timer-count"),
+  timerFill: document.querySelector("#timer-fill"),
   toast: document.querySelector("#toast")
 };
 
 let state = loadState();
+let leaderboards = loadLeaderboards();
 let activeRun = null;
 let summaryOutcome = null;
 let selectedWorldId = getWorldForLevel(state.unlockedLevel).id;
+let pendingLevelIndex = null;
+let timerInterval = null;
 let toastTimeout = null;
 
 function loadState() {
@@ -294,6 +311,52 @@ function saveState() {
   } catch {
     showToast("O navegador não conseguiu salvar o progresso. Você ainda pode continuar jogando.");
   }
+}
+
+function loadLeaderboards() {
+  try {
+    const saved = localStorage.getItem(LEADERBOARD_STORAGE_KEY);
+    if (!saved) return {};
+    const parsed = JSON.parse(saved);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      throw new Error("O placar salvo não tem o formato esperado.");
+    }
+    const validEntries = {};
+    Object.entries(parsed).forEach(([levelKey, records]) => {
+      const levelIndex = Number(levelKey);
+      if (!Number.isInteger(levelIndex) || levelIndex < 0 || levelIndex >= levels.length || !Array.isArray(records)) return;
+      const validRecords = records.filter((record) =>
+        record &&
+        Number.isInteger(record.correctAnswers) &&
+        record.correctAnswers >= 0 &&
+        record.correctAnswers <= QUESTIONS_PER_LEVEL &&
+        Number.isFinite(record.elapsedMs) &&
+        record.elapsedMs >= 0 &&
+        Number.isFinite(record.playedAt)
+      );
+      validEntries[levelIndex] = sortRecords(validRecords).slice(0, LEADERBOARD_SIZE);
+    });
+    return validEntries;
+  } catch {
+    showToast("Não consegui ler as melhores marcas salvas. Um novo placar será iniciado.");
+    return {};
+  }
+}
+
+function saveLeaderboards() {
+  try {
+    localStorage.setItem(LEADERBOARD_STORAGE_KEY, JSON.stringify(leaderboards));
+  } catch {
+    showToast("O navegador não conseguiu salvar as melhores marcas.");
+  }
+}
+
+function sortRecords(records) {
+  return [...records].sort((first, second) =>
+    second.correctAnswers - first.correctAnswers ||
+    first.elapsedMs - second.elapsedMs ||
+    first.playedAt - second.playedAt
+  );
 }
 
 function showToast(message) {
@@ -422,21 +485,47 @@ function chooseSkin(skin) {
 function startLevel(index) {
   const level = levels[index];
   if (!level || index > state.unlockedLevel) return;
+  pendingLevelIndex = index;
+  summaryOutcome = null;
+  clearTimer();
+  const world = getWorldForLevel(index);
+  elements.dialogTitle.textContent = "Escolha como quer jogar";
+  elements.setupTopic.textContent = `${world.shortTitle} · FASE ${index - world.start + 1}`;
+  elements.setupTitle.textContent = level.title;
+  elements.challengeSetup.hidden = false;
+  elements.quizGame.hidden = true;
+  renderLeaderboard(index);
+  elements.quizOverlay.hidden = false;
+  document.body.style.overflow = "hidden";
+  elements.normalModeButton.focus();
+}
+
+function beginRun(index, timed) {
+  const level = levels[index];
+  if (!level || index > state.unlockedLevel) return;
   activeRun = {
     levelIndex: index,
     questions: shuffle(level.questions).slice(0, QUESTIONS_PER_LEVEL),
     questionIndex: 0,
     correctAnswers: 0,
     selectedAnswer: null,
-    answered: false
+    answered: false,
+    timed,
+    elapsedMs: 0,
+    questionStartedAt: null,
+    questionClockStopped: false,
+    deadline: null,
+    finished: false
   };
-  elements.quizOverlay.hidden = false;
-  document.body.style.overflow = "hidden";
+  summaryOutcome = null;
+  pendingLevelIndex = null;
+  elements.challengeSetup.hidden = true;
+  elements.quizGame.hidden = false;
+  elements.dialogTitle.textContent = timed ? "Desafio contra o relógio" : "Jogando no meu ritmo";
   const world = getWorldForLevel(index);
   elements.quizTopic.textContent = `${world.shortTitle} · FASE ${index - world.start + 1} · ${level.topic}`;
   elements.quizMascot.textContent = getEquippedSkin().emoji;
   renderQuestion();
-  elements.closeQuiz.focus();
 }
 
 function shuffle(items) {
@@ -449,6 +538,7 @@ function shuffle(items) {
 }
 
 function renderQuestion() {
+  clearTimer();
   const question = activeRun.questions[activeRun.questionIndex];
   const level = levels[activeRun.levelIndex];
   elements.quizCounter.textContent = `${activeRun.questionIndex + 1} de ${activeRun.questions.length}`;
@@ -465,6 +555,7 @@ function renderQuestion() {
   elements.continueButton.focus();
   activeRun.selectedAnswer = null;
   activeRun.answered = false;
+  elements.timerPanel.hidden = !activeRun.timed;
 
   question.choices.forEach((choice, index) => {
     const button = document.createElement("button");
@@ -475,10 +566,15 @@ function renderQuestion() {
     button.addEventListener("click", () => selectAnswer(index));
     elements.answerList.append(button);
   });
+  if (activeRun.timed) startTimer();
 }
 
 function selectAnswer(answerIndex) {
   if (!activeRun || activeRun.answered) return;
+  if (activeRun.timed && Date.now() >= activeRun.deadline) {
+    finishTimedRun("timeout");
+    return;
+  }
   activeRun.selectedAnswer = answerIndex;
   const buttons = [...elements.answerList.querySelectorAll(".answer-option")];
   buttons.forEach((button, index) => {
@@ -490,6 +586,12 @@ function selectAnswer(answerIndex) {
 
 function answerQuestion() {
   if (!activeRun || activeRun.answered || activeRun.selectedAnswer === null) return;
+  if (activeRun.timed && Date.now() >= activeRun.deadline) {
+    finishTimedRun("timeout");
+    return;
+  }
+  stopQuestionClock();
+  clearTimer();
   activeRun.answered = true;
   const question = activeRun.questions[activeRun.questionIndex];
   const buttons = [...elements.answerList.querySelectorAll(".answer-option")];
@@ -505,6 +607,131 @@ function answerQuestion() {
   elements.feedback.textContent = `${isCorrect ? "Muito bem! " : "Quase! "} ${question.explanation}`;
   elements.continueButton.textContent = activeRun.questionIndex === activeRun.questions.length - 1 ? "Ver resultado ✨" : "Próximo desafio →";
   elements.continueButton.disabled = false;
+  if (activeRun.timed && !isCorrect) finishTimedRun("incorrect", question.explanation);
+}
+
+function startTimer() {
+  activeRun.questionStartedAt = Date.now();
+  activeRun.questionClockStopped = false;
+  activeRun.deadline = Date.now() + TIME_PER_QUESTION_SECONDS * 1000;
+  updateTimerDisplay(TIME_PER_QUESTION_SECONDS * 1000);
+  timerInterval = window.setInterval(() => {
+    if (!activeRun || !activeRun.timed || activeRun.finished) {
+      clearTimer();
+      return;
+    }
+    const remainingMs = activeRun.deadline - Date.now();
+    if (remainingMs <= 0) {
+      finishTimedRun("timeout");
+      return;
+    }
+    updateTimerDisplay(remainingMs);
+  }, 100);
+}
+
+function updateTimerDisplay(remainingMs) {
+  const remainingSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+  elements.timerCount.textContent = `${remainingSeconds}s`;
+  elements.timerFill.style.width = `${Math.max(0, Math.min(100, (remainingMs / (TIME_PER_QUESTION_SECONDS * 1000)) * 100))}%`;
+  elements.timerPanel.classList.toggle("urgent", remainingSeconds <= 5);
+}
+
+function clearTimer() {
+  if (timerInterval !== null) {
+    window.clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function stopQuestionClock() {
+  if (!activeRun || !activeRun.timed || activeRun.questionClockStopped || activeRun.questionStartedAt === null) return;
+  const elapsed = Date.now() - activeRun.questionStartedAt;
+  activeRun.elapsedMs += Math.max(0, Math.min(TIME_PER_QUESTION_SECONDS * 1000, elapsed));
+  activeRun.questionClockStopped = true;
+}
+
+function finishTimedRun(reason, explanation = "") {
+  if (!activeRun || !activeRun.timed || activeRun.finished) return;
+  clearTimer();
+  const run = activeRun;
+  stopQuestionClock();
+  run.finished = true;
+  const elapsedMs = run.elapsedMs;
+  const record = {
+    correctAnswers: run.correctAnswers,
+    elapsedMs,
+    playedAt: Date.now()
+  };
+  leaderboards[run.levelIndex] = sortRecords([...(leaderboards[run.levelIndex] || []), record])
+    .slice(0, LEADERBOARD_SIZE);
+  saveLeaderboards();
+  summaryOutcome = { mode: "timed", levelIndex: run.levelIndex };
+  renderLeaderboard(run.levelIndex);
+
+  elements.dialogTitle.textContent = "Resultado do desafio";
+  elements.quizTopic.textContent = reason === "completed" ? "DESAFIO CONCLUÍDO" : reason === "timeout" ? "TEMPO ESGOTADO" : "RODADA ENCERRADA";
+  elements.quizProgress.style.width = "100%";
+  elements.timerPanel.hidden = false;
+  elements.timerPanel.classList.toggle("urgent", reason !== "completed");
+  if (reason === "timeout") {
+    elements.timerCount.textContent = "0s";
+    elements.timerFill.style.width = "0%";
+  }
+  elements.questionSkill.textContent = "";
+  elements.quizTitle.textContent = reason === "completed"
+    ? "Você respondeu tudo a tempo!"
+    : reason === "timeout"
+      ? "O tempo desta pergunta acabou."
+      : "Não desanime, você pode tentar de novo!";
+
+  const question = run.questions[run.questionIndex];
+  if (reason === "timeout") {
+    [...elements.answerList.querySelectorAll(".answer-option")].forEach((button, index) => {
+      button.disabled = true;
+      if (index === question.answer) button.classList.add("correct");
+    });
+  }
+
+  elements.feedback.hidden = false;
+  elements.feedback.className = `answer-feedback${reason === "completed" ? "" : " wrong"}`;
+  const reasonText = reason === "completed"
+    ? "Desafio completo!"
+    : reason === "timeout"
+      ? `O tempo acabou. A resposta correta era "${question.choices[question.answer]}". ${explanation || question.explanation}`
+      : `Essa resposta não era a correta. ${explanation}`;
+  elements.feedback.textContent = `${reasonText} Você acertou ${run.correctAnswers} de ${run.questions.length}. Este modo não dá estrelas nem muda o progresso das fases.`;
+  elements.continueButton.hidden = false;
+  elements.continueButton.disabled = false;
+  elements.continueButton.textContent = "Voltar ao mapa";
+}
+
+function renderLeaderboard(levelIndex) {
+  elements.leaderboard.replaceChildren();
+  const records = leaderboards[levelIndex] || [];
+  if (records.length === 0) {
+    const item = document.createElement("li");
+    item.className = "leaderboard-empty";
+    item.textContent = "Ainda sem marcas. Que tal registrar a primeira?";
+    elements.leaderboard.append(item);
+    return;
+  }
+
+  records.forEach((record) => {
+    const item = document.createElement("li");
+    item.className = "leaderboard-entry";
+    const score = document.createElement("span");
+    score.className = "leaderboard-score";
+    score.textContent = `${record.correctAnswers} de ${QUESTIONS_PER_LEVEL} acertos`;
+    const time = document.createElement("span");
+    time.className = "leaderboard-time";
+    time.textContent = formatElapsed(record.elapsedMs);
+    item.append(score, time);
+    elements.leaderboard.append(item);
+  });
+}
+
+function formatElapsed(milliseconds) {
+  return `${(milliseconds / 1000).toFixed(1)} s`;
 }
 
 function continueRun() {
@@ -512,8 +739,9 @@ function continueRun() {
     const outcome = summaryOutcome;
     summaryOutcome = null;
     closeQuiz();
-    if (!outcome.passed) startLevel(outcome.levelIndex);
-    else showToast(outcome.levelIndex === levels.length - 1 ? "Incrível! Você terminou a trilha! 🌟" : `A fase "${levels[outcome.levelIndex].title}" foi concluída!`);
+    if (outcome.mode === "timed") showToast("Sua marca do desafio foi salva no placar desta fase! 🏆");
+    else if (!outcome.passed) startLevel(outcome.levelIndex);
+    else showToast(outcome.levelIndex === levels.length - 1 ? "Incrível! Você terminou todos os mundos! 🌟" : `A fase "${levels[outcome.levelIndex].title}" foi concluída!`);
     return;
   }
   if (!activeRun) return;
@@ -524,6 +752,8 @@ function continueRun() {
   if (activeRun.questionIndex < activeRun.questions.length - 1) {
     activeRun.questionIndex += 1;
     renderQuestion();
+  } else if (activeRun.timed) {
+    finishTimedRun("completed");
   } else {
     finishLevel();
   }
@@ -531,7 +761,7 @@ function continueRun() {
 
 function finishLevel() {
   const run = activeRun;
-  summaryOutcome = { passed: run.correctAnswers >= PASSING_SCORE, levelIndex: run.levelIndex };
+  summaryOutcome = { mode: "normal", passed: run.correctAnswers >= PASSING_SCORE, levelIndex: run.levelIndex };
   const passed = run.correctAnswers >= PASSING_SCORE;
   const previousUnlockedLevel = state.unlockedLevel;
   state.stars += run.correctAnswers;
@@ -561,12 +791,22 @@ function finishLevel() {
 }
 
 function closeQuiz() {
+  clearTimer();
   activeRun = null;
   summaryOutcome = null;
+  pendingLevelIndex = null;
+  elements.challengeSetup.hidden = false;
+  elements.quizGame.hidden = true;
   elements.quizOverlay.hidden = true;
   document.body.style.overflow = "";
 }
 
+elements.normalModeButton.addEventListener("click", () => {
+  if (pendingLevelIndex !== null) beginRun(pendingLevelIndex, false);
+});
+elements.timedModeButton.addEventListener("click", () => {
+  if (pendingLevelIndex !== null) beginRun(pendingLevelIndex, true);
+});
 elements.closeQuiz.addEventListener("click", closeQuiz);
 elements.quizOverlay.addEventListener("click", (event) => {
   if (event.target === elements.quizOverlay) closeQuiz();
